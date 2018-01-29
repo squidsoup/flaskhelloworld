@@ -3,7 +3,6 @@ from flask import Flask
 
 app = Flask(__name__)
 app.config.from_object('helloworld.default_settings')
-app.config.from_envvar('HELLOWORLD_SETTINGS')
 
 if not app.debug:
     import logging
