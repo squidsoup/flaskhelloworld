@@ -1,16 +1,27 @@
-import os
-from flask import Flask
+from flask import abort, render_template, request, current_app, Flask
 
-app = Flask(__name__)
-app.config.from_object('helloworld.default_settings')
+from config import config
 
-if not app.debug:
-    import logging
-    from logging.handlers import TimedRotatingFileHandler
-    # https://docs.python.org/3.6/library/logging.handlers.html#timedrotatingfilehandler
-    file_handler = TimedRotatingFileHandler(os.path.join(app.config['LOG_DIR'], 'helloworld.log'), 'midnight')
-    file_handler.setLevel(logging.WARNING)
-    file_handler.setFormatter(logging.Formatter('<%(asctime)s> <%(levelname)s> %(message)s'))
-    app.logger.addHandler(file_handler)
+def create_app(config_name):
+  app = Flask(__name__)
+  app.config.from_object(config[config_name])
+  config[config_name].init_app(app)
 
-import helloworld.views
+  @app.route('/')
+  def index():
+      return render_template('index.html')
+
+  @app.route('/shutdown')
+  def server_shutdown():
+    if not current_app.testing:
+        abort(404)
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if not shutdown:
+        abort(500)
+    shutdown()
+    return 'Shutting down...'
+
+  return app
+
+
+app = create_app('default')
