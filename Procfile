@@ -1,1 +1,1 @@
-web: gunicorn -b :5000 helloworld:app
+web: gunicorn helloworld:app
