@@ -47,13 +47,24 @@ jobs:
       # https://nose.readthedocs.io
       - run:
           name: run tests
-          environment:
-            HELLOWORLD_SETTINGS: settings.cfg
           command: |
             . venv/bin/activate
-            HELLOWORLD_SETTINGS=settings.cfg make test
+            make test
 
       - store_artifacts:
           path: test-reports
           destination: test-reports
-          
+
+      - run: bash .circleci/setup-heroku.sh
+
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:4XmuumWddg36SOt9VDsrUyWnFMfzaDJQ0Y5Cel7VcMw"
+
+      - deploy:
+          name: Deploy Master to Heroku
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git push heroku master
+              heroku restart
+            fi
