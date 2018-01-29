@@ -1,1 +1,1 @@
-web: gunicorn -b :$PORT helloworld:app
+web: gunicorn -b :5000 helloworld:app
