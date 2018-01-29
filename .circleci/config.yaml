@@ -51,7 +51,7 @@ jobs:
             HELLOWORLD_SETTINGS: settings.cfg
           command: |
             . venv/bin/activate
-            make test
+            HELLOWORLD_SETTINGS=settings.cfg make test
 
       - store_artifacts:
           path: test-reports
