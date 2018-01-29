@@ -2,10 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>flask-hello-world</title>
+    <title>Flask Hello world</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
-    Welcome to flask-hello-world
+      <h1>Welcome to flask-hello-world</h1>
+      <button id="clickMe">Click me</button>
+      <p id="result"></p>
   </body>
+
+  <script>
+   let btn = document.querySelector('#clickMe');
+   btn.addEventListener('click', displayResult);
+
+   function displayResult() {
+       let result = document.querySelector('#result');
+       result.textContent = 'You clicked the button.';
+   }
+  </script>
 </html>
